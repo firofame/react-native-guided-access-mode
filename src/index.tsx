@@ -17,12 +17,10 @@ const GuidedAccessMode = NativeModules.GuidedAccessMode
       }
     );
 
-export function isGuidedAccessEnabled(): Promise<boolean> {
+export function isGuidedAccessEnabledAsync(): Promise<boolean> {
   return GuidedAccessMode.isGuidedAccessEnabled();
 }
 
 export const guidedAccessEventEmitter = new NativeEventEmitter(
   GuidedAccessMode
 );
-
-export { GuidedAccessMode };

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, NativeEventEmitter, NativeModules } from 'react-native';
+import { View, Text } from 'react-native';
 
-const { GuidedAccessMode } = NativeModules;
-const guidedAccessEventEmitter = new NativeEventEmitter(GuidedAccessMode);
+import {
+  isGuidedAccessEnabledAsync,
+  guidedAccessEventEmitter,
+} from 'react-native-guided-access-mode';
 
 const App = () => {
   const [isGuidedAccessEnabled, setIsGuidedAccessEnabled] = useState(false);
@@ -10,7 +12,7 @@ const App = () => {
   useEffect(() => {
     const checkGuidedAccessEnabled = async () => {
       try {
-        const enabled = await GuidedAccessMode.isGuidedAccessEnabled();
+        const enabled = await isGuidedAccessEnabledAsync();
         setIsGuidedAccessEnabled(enabled);
       } catch (error) {
         console.error('Failed to check Guided Access status:', error);
