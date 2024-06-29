@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules, NativeEventEmitter, Platform } from 'react-native';
 
 const LINKING_ERROR =
   `The package 'react-native-guided-access-mode' doesn't seem to be linked. Make sure: \n\n` +
@@ -17,6 +17,12 @@ const GuidedAccessMode = NativeModules.GuidedAccessMode
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return GuidedAccessMode.multiply(a, b);
+export function isGuidedAccessEnabled(): Promise<boolean> {
+  return GuidedAccessMode.isGuidedAccessEnabled();
 }
+
+export const guidedAccessEventEmitter = new NativeEventEmitter(
+  GuidedAccessMode
+);
+
+export { GuidedAccessMode };
