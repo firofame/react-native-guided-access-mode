@@ -1,0 +1,56 @@
+name: Publish to npm
+
+on:
+  push:
+    tags:
+      - 'v[0-9]*'
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org/
+          package-manager-cache: false
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Validate release version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          node -e 'const { version } = require("./package.json"); if (process.env.RELEASE_TAG !== `v${version}`) { throw new Error(`Release tag ${process.env.RELEASE_TAG} must match package version v${version}`); }'
+
+      - name: Lint files
+        run: yarn lint
+
+      - name: Typecheck files
+        run: yarn typecheck
+
+      - name: Run unit tests
+        run: yarn test --maxWorkers=2 --coverage
+
+      - name: Build package
+        run: yarn prepare
+
+      - name: Publish package to npm
+        run: npm publish --access public --provenance
