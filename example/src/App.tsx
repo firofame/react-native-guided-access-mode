@@ -1,43 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 import {
   isGuidedAccessEnabledAsync,
-  guidedAccessEventEmitter,
+  onGuidedAccessStatusChange,
 } from 'react-native-guided-access-mode';
 
-const App = () => {
-  const [isGuidedAccessEnabled, setIsGuidedAccessEnabled] = useState(false);
+export default function App() {
+  const [enabled, setEnabled] = useState<boolean>(false);
 
   useEffect(() => {
-    const checkGuidedAccessEnabled = async () => {
-      try {
-        const enabled = await isGuidedAccessEnabledAsync();
-        setIsGuidedAccessEnabled(enabled);
-      } catch (error) {
+    isGuidedAccessEnabledAsync()
+      .then(setEnabled)
+      .catch((error) => {
         console.error('Failed to check Guided Access status:', error);
-      }
-    };
+      });
 
-    checkGuidedAccessEnabled();
+    const subscription = onGuidedAccessStatusChange((event) => {
+      setEnabled(event.enabled);
+    });
 
-    const subscription = guidedAccessEventEmitter.addListener(
-      'guidedAccessStatusDidChange',
-      (event) => {
-        setIsGuidedAccessEnabled(event.enabled);
-      }
-    );
-
-    return () => {
-      subscription.remove();
-    };
+    return () => subscription.remove();
   }, []);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>{`Guided Access is currently ${isGuidedAccessEnabled ? 'enabled' : 'disabled'}`}</Text>
+    <View style={styles.container}>
+      <Text>{`Guided Access is currently ${enabled ? 'enabled' : 'disabled'}`}</Text>
     </View>
   );
-};
+}
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
