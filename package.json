@@ -1,6 +1,6 @@
 {
   "name": "react-native-guided-access-mode",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "accessibility features while using Guided Access",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",

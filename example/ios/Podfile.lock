@@ -1349,7 +1349,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - react-native-guided-access-mode (0.1.2):
+  - react-native-guided-access-mode (0.2.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2084,7 +2084,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: a2dae4f2cb335ebb97f2240494d0c2bab84cd339
   React-microtasksnativemodule: 8b3aaa5f3b907ecf071b105589868d9f027a448d
   React-mutationobservernativemodule: 11d77d3f7360578f07847843544ada23cc473049
-  react-native-guided-access-mode: f9e6edd94c7fe2072d693607ccb04a3f31e71319
+  react-native-guided-access-mode: d61fad1ed4ee974195585541bf6834cf9651fa6e
   React-NativeModulesApple: 52f3def085f129de1307e3eb78e26729ff70f421
   React-networking: 1e6441349ac72bfd4f7a79c300c3dd76993a7058
   React-oscompat: e64123dd8199f9e99cede19fa542c3da3445481e
